@@ -1,7 +1,6 @@
 package com.example.firebasejetpack;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -33,6 +32,7 @@ public class loginFragment extends Fragment implements View.OnClickListener{
     TextView txt_reg;
     private FirebaseAuth auth;
     FirebaseUser user;
+    Controller navcontrol;
 
     public loginFragment() {
     }
@@ -45,6 +45,7 @@ public class loginFragment extends Fragment implements View.OnClickListener{
         edt_pad = view.findViewById(R.id.edt_pass);
         btn_log = view.findViewById(R.id.btn_log);
         txt_reg = view.findViewById(R.id.txt_lrge);
+
 
         btn_log.setOnClickListener(this);
         txt_reg.setOnClickListener(this);
@@ -105,6 +106,8 @@ public class loginFragment extends Fragment implements View.OnClickListener{
                     user = auth.getCurrentUser();
                     Toast.makeText(getActivity().getApplicationContext(),"Login successful",Toast.LENGTH_SHORT).show();
 
+
+                    updateUI(user);
                 }
                 else{
                     Toast.makeText(getActivity().getApplicationContext(),task.getException().getMessage(),Toast.LENGTH_SHORT).show();
@@ -112,5 +115,24 @@ public class loginFragment extends Fragment implements View.OnClickListener{
             }
         });
 
+    }
+    public  void updateUI(FirebaseUser user){
+
+        navcontrol = new Controller();
+        Bundle b = new Bundle();
+        b.putParcelable("user", user);
+
+        navcontrol.navigatetofragment(R.id.dashboardFragment,getActivity(),b);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        user =auth.getCurrentUser();
+        if (user != null){
+            updateUI(user);
+            Toast.makeText(getActivity().getApplicationContext(),"user already login",Toast.LENGTH_SHORT).show();
+        }
     }
 }

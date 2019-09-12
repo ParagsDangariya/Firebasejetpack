@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -98,6 +100,7 @@ public class registerFragment extends Fragment {
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(getActivity().getApplicationContext(),"regestration",Toast.LENGTH_SHORT).show();
 
+
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -113,6 +116,9 @@ public class registerFragment extends Fragment {
                 }
             }
         });
+        FirebaseAuth.getInstance().signOut();
+        NavController navController = Navigation.findNavController(getActivity(),R.id.host_frag);
+        navController.navigate(R.id.loginFragment);
     }
 
     @Override
